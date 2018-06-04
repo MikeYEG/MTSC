@@ -29,14 +29,12 @@ if [ $? -eq 0 ]; then
  else
    echo "Won't install ssh keys, github.com couldn't be reached."
  fi
- /etc/init.d/ssh reload
 
 #Run this later when you're sure your ssh key access works and you disable password auth
 #sed -i 's|[#]*PasswordAuthentication yes|PasswordAuthentication no|g' /etc/ssh/sshd_config
 
 #One liner for static ip config
 #sudo sed -i '$ a\interface eth0\nstatic ip_address=0.0.0.0/24\nstatic routers=0.0.0.1\nstatic domain_name_servers=208.67.222.222 1.1.1.1\n' /etc/dhcpcd.conf
-#this will disable dhcp on reboot
-#sudo update-rc.d dhcpcd disable
-#sudo reboot
+
+sudo reboot
 
