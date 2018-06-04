@@ -11,7 +11,7 @@ sudo apt-get clean -y && sudo apt-get autoremove -y
 ##  See https://raspberrypi.stackexchange.com/a/66939/8375 for a list of all the raspi-config magic you may want to automate.
 sudo raspi-config nonint do_boot_behaviour B1
 sudo raspi-config nonint do_expand_rootfs
-sudo raspi-config nonint do_hostname "mtsc-necl"
+sudo raspi-config nonint do_hostname "hostnamehere"
 
 sudo rm /etc/ssh/ssh_host_* && sudo dpkg-reconfigure openssh-server
 HOSTNAME=`hostname` ssh-keygen -t rsa -C "$HOSTNAME" -f "$HOME/.ssh/id_rsa" -P ""
