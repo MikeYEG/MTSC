@@ -3,17 +3,17 @@
 
 #########Setup Variables###############
 #Github public sshkeys
-github_user=githubusernamehere
+github_user="githubusernamehere"
 #New Username for SSH Access
-newuser=mtsc
+newuser="mtsc"
 #Changing the hostname of the pi
 hostname=hostnamehere
 
 #IP Info to set below
-ipaddress=0.0.0.1/24
-gateway=0.0.0.0
+ipaddress="0.0.0.1/24"
+gateway="0.0.0.0"
 #DNS Servers, put a space between if multiple
-dns=208.67.222.222 1.1.1.1
+dns="208.67.222.222 1.1.1.1"
 
 
 #########Begin Script###############
