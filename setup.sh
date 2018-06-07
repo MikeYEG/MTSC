@@ -8,6 +8,7 @@ github_user=githubusernamehere
 newuser=mtsc
 #Changing the hostname of the pi
 hostname=hostnamehere
+
 #IP Info to set below
 ipaddress=0.0.0.1/24
 gateway=0.0.0.0
