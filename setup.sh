@@ -7,7 +7,7 @@ github_user="githubusernamehere"
 #New Username for SSH Access
 newuser="mtsc"
 #Changing the hostname of the pi
-hostname=hostnamehere
+hostname="hostnamehere"
 
 #IP Info to set below
 ipaddress="0.0.0.1/24"
