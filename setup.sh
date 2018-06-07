@@ -3,7 +3,7 @@
 
 #########Setup Variables###############
 #Github public sshkeys
-github_user="githubusername"
+github_user="testusername"
 #New Username for SSH Access
 newuser="mtsc"
 #Changing the hostname of the pi
