@@ -23,6 +23,27 @@ sudo usermod --lock pi
 #Create the new ssh only user with no password, and (yes y) hits enter to all the "info"
 yes y | sudo adduser ${newuser} --disabled-password
 
+#Add newly created user to the sudoers file since it doesn't have a password to authenticate to sudo anyway. Note - WIP - 
+# this didn't end up being a good plan. need to create a password for the mtsc acct.
+
+# Take a backup of sudoers file and change the backup file.
+#sudo cp /etc/sudoers /tmp/sudoers.bak
+#sudo  echo "${newuser} ALL=(ALL) NOPASSWD:ALL
+#Defaults:${newuser} !requiretty
+#" >> /tmp/sudoers.bak
+
+# Check syntax of the backup file to make sure it is correct.
+#sudo visudo -cf /tmp/sudoers.bak
+#if [ $? -eq 0 ]; then
+  # Replace the sudoers file with the new only if syntax is correct.
+#  sudo cp /tmp/sudoers.bak /etc/sudoers
+#else
+#  echo "Could not modify /etc/sudoers file. Please do this manually."
+#fi
+
+
+
+
 #Update this cow
 sudo rpi-update && sudo apt -y update && sudo apt -y upgrade
 
