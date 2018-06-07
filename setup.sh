@@ -35,11 +35,10 @@ yes y | sudo adduser ${newuser} --disabled-password
 #Clean up apt
 #sudo apt-get clean -y && sudo apt-get autoremove -y
 
-#### change the boot to non-gui and console only, expand the filesystem and properly update the hostname
+#### change the boot to non-gui and console only and expand the filesystem
 ##  See https://raspberrypi.stackexchange.com/a/66939/8375 for a list of all the raspi-config magic you may want to automate.
 sudo raspi-config nonint do_boot_behaviour B1
 sudo raspi-config nonint do_expand_rootfs
-sudo raspi-config nonint do_hostname "${hostname}"
 
 #Blow away the default ssh config and recreate one from scratch
 sudo rm /etc/ssh/ssh_host_* && sudo dpkg-reconfigure openssh-server
@@ -69,5 +68,6 @@ cat /home/${newuser}/.ssh/authorized_keys
 tail -n 5 /etc/dhcpcd.conf
 read -n1 -r -p "All done, Press any key to continue..." key
 
+sudo raspi-config nonint do_hostname "${hostname}"
 sudo reboot
 
