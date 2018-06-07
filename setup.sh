@@ -51,14 +51,14 @@ sudo  -S -u ${newuser} ssh-keygen -t rsa -C "${hostname}" -f "/home/${newuser}/.
 
 echo -e "GET http://github.com HTTP/1.0\n\n" | nc github.com 80 > /dev/null 2>&1
 if [ $? -eq 0 ]; then
-   sudo curl -sSL https://github.com/${github_user}.keys >> /home/${newuser}/.ssh/authorized_keys
+   sudo -S -u ${newuser} curl -sSL https://github.com/${github_user}.keys >> /home/${newuser}/.ssh/authorized_keys
    echo "Keys installed from gitub.com"
  else
    echo "Won't install ssh keys, github.com couldn't be reached."
  fi
 
 #Will disable password authentication through ssh
-sed -i 's|[#]*PasswordAuthentication yes|PasswordAuthentication no|g' /etc/ssh/sshd_config
+sed -i "s|[#]*PasswordAuthentication yes|PasswordAuthentication no|g" /etc/ssh/sshd_config
 
 #One liner for static ip config
 sudo sed -i "$ a\interface eth0\nstatic ip_address=${ipaddress}\nstatic routers=${gateway}\nstatic domain_name_servers=${dns}\n" /etc/dhcpcd.conf
@@ -68,5 +68,5 @@ tail -n 5 /etc/dhcpcd.conf
 read -n1 -r -p "All done, Press any key to continue..." key
 
 sudo raspi-config nonint do_hostname "${hostname}"
-sudo reboot
+#sudo reboot
 
