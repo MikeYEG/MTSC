@@ -3,15 +3,15 @@
 
 #########Setup Variables###############
 #Github public sshkeys
-github_user="githubusernamehere"
+github_user="mmccollum2"
 #New Username for SSH Access
 newuser="mtsc"
 #Changing the hostname of the pi
 hostname="hostnamehere"
 
 #IP Info to set below
-ipaddress="0.0.0.1/24"
-gateway="0.0.0.0"
+ipaddress="10.0.0.197/24"
+gateway="10.0.0.1"
 #DNS Servers, put a space between if multiple
 dns="208.67.222.222 1.1.1.1"
 
@@ -43,15 +43,17 @@ sudo raspi-config nonint do_hostname "${hostname}"
 
 #Blow away the default ssh config and recreate one from scratch
 sudo rm /etc/ssh/ssh_host_* && sudo dpkg-reconfigure openssh-server
-ssh-keygen -t rsa -C "${hostname}" -f "/home/${newuser}/.ssh/id_rsa" -P ""
+#Create the .ssh folder and the authorized keys
+sudo -S -u ${newuser} mkdir /home/${newuser}/.ssh && sudo -S -u ${newuser} touch /home/${newuser}/.ssh/authorized_keys
+sudo  -S -u ${newuser} ssh-keygen -t rsa -C "${hostname}" -f "/home/${newuser}/.ssh/id_rsa" -P ""
 
-#### Get SSH keys for authentication from github and put the public key into authorized for the new user we created
+#### Get SSH keys for authentication from github and put the public key into authorized_keys for the new user we created
 
 echo -e "GET http://github.com HTTP/1.0\n\n" | nc github.com 80 > /dev/null 2>&1
 if [ $? -eq 0 ]; then
-   (umask 077; mkdir -p /home/${newuser}/.ssh; touch /home/${newuser}/.ssh/authorized_keys)
+   (sudo -S -u ${newuser} touch /home/${newuser}/.ssh/authorized_keys)
    #chown -R $(id -u pi):$(id -g pi) /home/pi/.ssh
-   curl -sSL https://github.com/${github_user}.keys >> /home/${newuser}/.ssh/authorized_keys
+   sudo curl -sSL https://github.com/${github_user}.keys >> /home/${newuser}/.ssh/authorized_keys
    echo "Keys installed from gitub.com"
  else
    echo "Won't install ssh keys, github.com couldn't be reached."
@@ -61,7 +63,11 @@ if [ $? -eq 0 ]; then
 sed -i 's|[#]*PasswordAuthentication yes|PasswordAuthentication no|g' /etc/ssh/sshd_config
 
 #One liner for static ip config
-sudo sed -i '$ a\interface eth0\nstatic ip_address=${ipaddress}\nstatic routers=${gateway}\nstatic domain_name_servers=${dns}\n' /etc/dhcpcd.conf
+sudo sed -i "$ a\interface eth0\nstatic ip_address=${ipaddress}\nstatic routers=${gateway}\nstatic domain_name_servers=${dns}\n" /etc/dhcpcd.conf
+
+cat /home/${newuser}/.ssh/authorized_keys
+tail -n 5 /etc/dhcpcd.conf
+read -n1 -r -p "All done, Press any key to continue..." key
 
 sudo reboot
 
