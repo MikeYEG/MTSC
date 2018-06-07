@@ -24,16 +24,16 @@ sudo usermod --lock pi
 yes y | sudo adduser ${newuser} --disabled-password
 
 #Update this cow
-sudo rpi-update && sudo apt -y update && sudo apt -y upgrade
+#sudo rpi-update && sudo apt -y update && sudo apt -y upgrade
 
 #Get rid of extra packages we don't need
-sudo apt-get purge --auto-remove scratch debian-reference-en dillo idle3 python3-tk idle python-pygame python-tk lightdm gnome-themes-standard gnome-icon-theme raspberrypi-artwork gvfs-backends gvfs-fuse desktop-base lxpolkit netsurf-gtk zenity xdg-utils mupdf gtk2-engines alsa-utils  lxde lxtask menu-xdg gksu midori xserver-xorg xinit xserver-xorg-video-fbdev libraspberrypi-dev libraspberrypi-doc dbus-x11 libx11-6 libx11-data libx11-xcb1 x11-common x11-utils lxde-icon-theme gconf-service gconf2-common xserver* ^x11 ^libx ^lx samba* -y
+#sudo apt-get purge --auto-remove scratch debian-reference-en dillo idle3 python3-tk idle python-pygame python-tk lightdm gnome-themes-standard gnome-icon-theme raspberrypi-artwork gvfs-backends gvfs-fuse desktop-base lxpolkit netsurf-gtk zenity xdg-utils mupdf gtk2-engines alsa-utils  lxde lxtask menu-xdg gksu midori xserver-xorg xinit xserver-xorg-video-fbdev libraspberrypi-dev libraspberrypi-doc dbus-x11 libx11-6 libx11-data libx11-xcb1 x11-common x11-utils lxde-icon-theme gconf-service gconf2-common xserver* ^x11 ^libx ^lx samba* -y
 
 #Add a few, plus raspi-config which we convieniently removed from the above list of packages as a dependency?
-sudo apt -y install vim raspi-config dnsutils
+#sudo apt -y install vim raspi-config dnsutils
 
 #Clean up apt
-sudo apt-get clean -y && sudo apt-get autoremove -y
+#sudo apt-get clean -y && sudo apt-get autoremove -y
 
 #### change the boot to non-gui and console only and expand the filesystem
 ##  See https://raspberrypi.stackexchange.com/a/66939/8375 for a list of all the raspi-config magic you may want to automate.
