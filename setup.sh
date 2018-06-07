@@ -19,21 +19,21 @@ dns=208.67.222.222 1.1.1.1
 #########Begin Script###############
 
 #Lock the password for pi since it's default, and we won't be using it anymore
-sudo usermod --lock pi
+##sudo usermod --lock pi
 #Create the new ssh only user with no password, and (yes y) hits enter to all the "info"
 yes y | sudo adduser ${newuser} --disabled-password
 
 #Update this cow
-sudo rpi-update && sudo apt -y update && sudo apt -y upgrade
+#sudo rpi-update && sudo apt -y update && sudo apt -y upgrade
 
 #Get rid of extra packages we don't need
-sudo apt-get purge --auto-remove scratch debian-reference-en dillo idle3 python3-tk idle python-pygame python-tk lightdm gnome-themes-standard gnome-icon-theme raspberrypi-artwork gvfs-backends gvfs-fuse desktop-base lxpolkit netsurf-gtk zenity xdg-utils mupdf gtk2-engines alsa-utils  lxde lxtask menu-xdg gksu midori xserver-xorg xinit xserver-xorg-video-fbdev libraspberrypi-dev libraspberrypi-doc dbus-x11 libx11-6 libx11-data libx11-xcb1 x11-common x11-utils lxde-icon-theme gconf-service gconf2-common xserver* ^x11 ^libx ^lx samba* -y
+#sudo apt-get purge --auto-remove scratch debian-reference-en dillo idle3 python3-tk idle python-pygame python-tk lightdm gnome-themes-standard gnome-icon-theme raspberrypi-artwork gvfs-backends gvfs-fuse desktop-base lxpolkit netsurf-gtk zenity xdg-utils mupdf gtk2-engines alsa-utils  lxde lxtask menu-xdg gksu midori xserver-xorg xinit xserver-xorg-video-fbdev libraspberrypi-dev libraspberrypi-doc dbus-x11 libx11-6 libx11-data libx11-xcb1 x11-common x11-utils lxde-icon-theme gconf-service gconf2-common xserver* ^x11 ^libx ^lx samba* -y
 
 #Add a few, plus raspi-config which we convieniently removed from the above list of packages as a dependency?
-sudo apt -y install vim raspi-config dnsutils
+#sudo apt -y install vim raspi-config dnsutils
 
 #Clean up apt
-sudo apt-get clean -y && sudo apt-get autoremove -y
+#sudo apt-get clean -y && sudo apt-get autoremove -y
 
 #### change the boot to non-gui and console only, expand the filesystem and properly update the hostname
 ##  See https://raspberrypi.stackexchange.com/a/66939/8375 for a list of all the raspi-config magic you may want to automate.
@@ -43,7 +43,7 @@ sudo raspi-config nonint do_hostname "${hostname}"
 
 #Blow away the default ssh config and recreate one from scratch
 sudo rm /etc/ssh/ssh_host_* && sudo dpkg-reconfigure openssh-server
-HOSTNAME=`${hostname}` ssh-keygen -t rsa -C "$HOSTNAME" -f "/home/${newuser}/.ssh/id_rsa" -P ""
+ssh-keygen -t rsa -C "${hostname}" -f "/home/${newuser}/.ssh/id_rsa" -P ""
 
 #### Get SSH keys for authentication from github and put the public key into authorized for the new user we created
 
@@ -61,7 +61,7 @@ if [ $? -eq 0 ]; then
 sed -i 's|[#]*PasswordAuthentication yes|PasswordAuthentication no|g' /etc/ssh/sshd_config
 
 #One liner for static ip config
-#sudo sed -i '$ a\interface eth0\nstatic ip_address=${ipaddress}\nstatic routers=${gateway}\nstatic domain_name_servers=${dns}\n' /etc/dhcpcd.conf
+sudo sed -i '$ a\interface eth0\nstatic ip_address=${ipaddress}\nstatic routers=${gateway}\nstatic domain_name_servers=${dns}\n' /etc/dhcpcd.conf
 
 sudo reboot
 
