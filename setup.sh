@@ -68,5 +68,5 @@ tail -n 5 /etc/dhcpcd.conf
 read -n1 -r -p "All done, Press any key to continue..." key
 
 sudo raspi-config nonint do_hostname "${hostname}"
-#sudo reboot
+sudo reboot
 
