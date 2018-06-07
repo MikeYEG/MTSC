@@ -1,19 +1,22 @@
 #!/bin/bash
 # Downsize and prep from standard Raspbian Image
 
-#Setup Variables
+#########Setup Variables###############
 #Github public sshkeys
 github_user=githubusernamehere
 #New Username for SSH Access
 newuser=mtsc
 #Changing the hostname of the pi
 hostname=hostnamehere
-
 #IP Info to set below
 ipaddress=0.0.0.1/24
 gateway=0.0.0.0
 #DNS Servers, put a space between if multiple
 dns=208.67.222.222 1.1.1.1
+
+
+#########Begin Script###############
+
 #Lock the password for pi since it's default, and we won't be using it anymore
 sudo usermod --lock pi
 #Create the new ssh only user with no password, and (yes y) hits enter to all the "info"
