@@ -19,7 +19,7 @@ dns="208.67.222.222 1.1.1.1"
 #########Begin Script###############
 
 #Lock the password for pi since it's default, and we won't be using it anymore
-#sudo usermod --lock pi
+sudo usermod --lock pi
 #Create the new ssh only user with no password automatically, and (yes y) hits enter to all the "info"
 yes y | sudo adduser ${newuser} --disabled-password
 #create random password
