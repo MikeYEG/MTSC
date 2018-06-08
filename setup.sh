@@ -48,13 +48,6 @@ else
   echo "Could not modify /etc/sudoers file. Please do this manually."
 fi
 
-sudo rm /etc/localtime
-sudo ln -s /usr/share/zoneinfo/America/Denver /etc/localtime
-sudo rm /etc/timezone
-echo "America/Denver" | sudo tee /etc/timezone 
-
-
-
 #Update this cow
 #sudo rpi-update && sudo apt -y update && sudo apt -y upgrade
 
@@ -71,6 +64,7 @@ echo "America/Denver" | sudo tee /etc/timezone
 ##  See https://raspberrypi.stackexchange.com/a/66939/8375 for a list of all the raspi-config magic you may want to automate.
 sudo raspi-config nonint do_boot_behaviour B1
 sudo raspi-config nonint do_expand_rootfs
+sudo raspi-config nonint do_change_timezone America/Edmonton
 
 #Blow away the default ssh config and recreate one from scratch
 sudo rm /etc/ssh/ssh_host_* && sudo dpkg-reconfigure openssh-server
