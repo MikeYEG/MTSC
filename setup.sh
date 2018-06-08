@@ -27,7 +27,8 @@ randompw=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9!@#$%^&*()' | fold -w 12 | head -
 #set the new users password to the random above
 echo ${newuser}:${randompw} | sudo chpasswd
 #display the password so you can put it into lastpass dummy.
-echo "UserID:" $newuser "has been created with the following password:" ${randompw}
+echo -e "\nUserID:\n"$newuser "\nhas been created with the following password:     "${randompw}
+echo -e "\n"
 #I'll just wait here while you do that
 read -n1 -r -p "Make note of this password, Press any key to continue..." key
 
@@ -94,5 +95,5 @@ tail -n 5 /etc/dhcpcd.conf
 read -n1 -r -p "All done, Press any key to continue..." key
 
 sudo raspi-config nonint do_hostname "${hostname}"
-#sudo reboot
+sudo reboot
 
