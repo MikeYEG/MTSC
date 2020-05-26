@@ -1,19 +1,43 @@
 #!/bin/bash
-# Downsize and prep from standard Raspbian Image
+#Downsize and prep from standard Raspbian Image
+#Tested May 26 2020
+#https://www.raspberrypi.org/downloads/raspbian/
+#Raspbian Buster Lite
+#MacOSX
+#diskutil list
+#diskutil unmountdisk /dev/disk2
+#sudo dd if=2020-02-13-raspbian-buster-lite.img of=/dev/disk2 bs=2m
+#Windows - https://sourceforge.net/projects/win32diskimager/files/latest/download?source=navbar
+#
+#
+#Once image is on sd card, create a file called ssh and put it into the boot directory
+#Also add a file called wpa_supplicant.conf to the boot directory to have wifi configured on bootup
+#wpa_supplicant.conf
+#
+#ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+#update_config=1
+#country=CA
+#
+#network={
+#    ssid="ssidhereee"
+#    psk="wifipwdhereee"
+#    key_mgmt=WPA-PSK
+#}
+#
 
 #########Setup Variables###############
 #Github public sshkeys
-github_user="testusername"
+github_user="mmccollum2"
 #New Username for SSH Access
-newuser="mtsc"
+newuser="applepie"
 #Changing the hostname of the pi
-hostname="hostnamehere"
+hostname="rpi4"
 
-#IP Info to set below
-ipaddress="0.0.0.0/24"
-gateway="0.0.0.0"
+#IP Info to set below  (If you want to set the static ip, then uncomment these, and then uncomment line 117 and 120 for setting and displaying the new ip info)
+#ipaddress="0.0.0.0/24"
+#gateway="0.0.0.0"
 #DNS Servers, put a space between if multiple
-dns="208.67.222.222 1.1.1.1"
+#dns="208.67.222.222 1.1.1.1"
 
 
 #########Begin Script###############
@@ -33,7 +57,7 @@ echo -e "\n"
 read -n1 -r -p "Make note of this password, Press any key to continue..." key
 
 
-#Add newly created user to the sudoers file since it doesn't have a password to authenticate to sudo anyway. Note - WIP - 
+#Add newly created user to the sudoers file since it doesn't have a password to authenticate to sudo anyway. Note - WIP -
 
 #make a backup copy of the sudoers file
 sudo cp /etc/sudoers /tmp/sudoers.bak
@@ -50,7 +74,9 @@ else
 fi
 
 #Update this cow
-sudo rpi-update && sudo apt -y update && sudo apt -y upgrade
+#rpi-update isn't needed anymore unless required by support. https://www.raspberrypi.org/forums/viewtopic.php?p=916911#p916911
+#sudo rpi-update
+sudo apt -y update && sudo apt -y upgrade
 
 #Get rid of extra packages we don't need
 sudo apt-get purge --auto-remove scratch debian-reference-en dillo idle3 python3-tk idle python-pygame python-tk lightdm gnome-themes-standard gnome-icon-theme raspberrypi-artwork gvfs-backends gvfs-fuse desktop-base lxpolkit netsurf-gtk zenity xdg-utils mupdf gtk2-engines alsa-utils  lxde lxtask menu-xdg gksu midori xserver-xorg xinit xserver-xorg-video-fbdev libraspberrypi-dev libraspberrypi-doc dbus-x11 libx11-6 libx11-data libx11-xcb1 x11-common x11-utils lxde-icon-theme gconf-service gconf2-common xserver* ^x11 ^libx ^lx samba* -y
@@ -88,12 +114,11 @@ if [ $? -eq 0 ]; then
 sed -i "s|[#]*PasswordAuthentication yes|PasswordAuthentication no|g" /etc/ssh/sshd_config
 
 #One liner for static ip config
-sudo sed -i "$ a\interface eth0\nstatic ip_address=${ipaddress}\nstatic routers=${gateway}\nstatic domain_name_servers=${dns}\n" /etc/dhcpcd.conf
+#sudo sed -i "$ a\interface eth0\nstatic ip_address=${ipaddress}\nstatic routers=${gateway}\nstatic domain_name_servers=${dns}\n" /etc/dhcpcd.conf
 
 cat /home/${newuser}/.ssh/authorized_keys
-tail -n 5 /etc/dhcpcd.conf
+#tail -n 5 /etc/dhcpcd.conf
 read -n1 -r -p "All done, Press any key to continue..." key
 
 sudo raspi-config nonint do_hostname "${hostname}"
 sudo reboot
-
